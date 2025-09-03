@@ -17,3 +17,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Compra(models.Model):
+    produto = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
+    data = models.DateTimeField(default=timezone.now)
+    # Você pode adicionar mais campos, como usuário, valor total, etc.
+    def __str__(self):
+        return f"Compra de {self.quantidade}x {self.produto.name} em {self.data.strftime('%d/%m/%Y %H:%M')}"

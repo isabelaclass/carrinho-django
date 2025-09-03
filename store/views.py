@@ -1,5 +1,7 @@
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from .models import Product, Compra
+
 def concluir_compra(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     quantity = request.POST.get("quantity") or 1
@@ -11,6 +13,8 @@ def concluir_compra(request, product_id):
     if product.stock >= quantity:
         product.stock -= quantity
         product.save()
+        # Salva a compra
+        Compra.objects.create(produto=product, quantidade=quantity)
     return render(request, "store/compra_realizada.html")
 from django.shortcuts import render, get_object_or_404
 from .models import Product
